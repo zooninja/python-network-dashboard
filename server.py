@@ -7,7 +7,7 @@ from collections import Counter
 try:
     from config import HOST, PORT, DEBUG
 except ImportError:
-    HOST = '0.0.0.0'
+    HOST = 'localhost'
     PORT = 8081
     DEBUG = False
 

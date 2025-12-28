@@ -42,15 +42,15 @@ Access at `http://localhost:8081`
 For remote access from other machines or cloud VMs, edit `config.py`:
 
 ```python
-HOST = '0.0.0.0'  # Remote access (current default)
+HOST = '0.0.0.0'  # Remote access
 PORT = 8081
 DEBUG = False
 ```
 
-For local-only access, change to:
+Default is local-only access:
 
 ```python
-HOST = 'localhost'  # Local access only
+HOST = 'localhost'  # Local access only (default)
 PORT = 8081
 DEBUG = False
 ```
@@ -101,16 +101,16 @@ python server.py
 
 Edit `config.py` to switch between modes:
 
-**Remote Access (Default):**
+**Local Only (Default):**
 ```python
-HOST = '0.0.0.0'
+HOST = 'localhost'
 PORT = 8081
 DEBUG = False
 ```
 
-**Local Only:**
+**Remote Access:**
 ```python
-HOST = 'localhost'
+HOST = '0.0.0.0'
 PORT = 8081
 DEBUG = False
 ```
