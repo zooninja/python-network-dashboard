@@ -264,12 +264,12 @@ if __name__ == '__main__':
     print("=" * 60)
     print("Python Network Dashboard Server")
     print("=" * 60)
-    print(f"Starting server on http://localhost:8081")
+    print(f"Starting server on http://0.0.0.0:8081")
     print("Press Ctrl+C to stop the server")
     print("=" * 60)
 
     try:
-        app.run(host='localhost', port=8081, debug=False)
+        app.run(host='0.0.0.0', port=8081, debug=False)
     except KeyboardInterrupt:
         print("\nServer stopped")
     except OSError as e:
