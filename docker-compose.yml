@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  # Network Dashboard - Local Mode (No Auth)
+  dashboard-local:
+    build: .
+    container_name: network-dashboard-local
+    network_mode: host
+    environment:
+      - HOST=127.0.0.1
+      - PORT=8081
+      - ALLOW_TERMINATE=true
+    # Required for accessing host network connections
+    cap_add:
+      - NET_ADMIN
+      - SYS_PTRACE
+    privileged: true
+    restart: unless-stopped
+    profiles:
+      - local
+
+  # Network Dashboard - Exposed Mode (With Auth)
+  dashboard-exposed:
+    build: .
+    container_name: network-dashboard-exposed
+    network_mode: host
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8081
+      - DASHBOARD_TOKEN=${DASHBOARD_TOKEN:?DASHBOARD_TOKEN is required for exposed mode}
+      - EXPOSE=true
+      - ALLOW_TERMINATE=${ALLOW_TERMINATE:-false}
+    cap_add:
+      - NET_ADMIN
+      - SYS_PTRACE
+    privileged: true
+    restart: unless-stopped
+    profiles:
+      - exposed
+
+  # Network Dashboard with Nginx Reverse Proxy (Production)
+  dashboard-prod:
+    build: .
+    container_name: network-dashboard-prod
+    network_mode: host
+    environment:
+      - HOST=127.0.0.1
+      - PORT=8081
+      - DASHBOARD_TOKEN=${DASHBOARD_TOKEN:?DASHBOARD_TOKEN is required}
+      - ALLOW_TERMINATE=false
+    cap_add:
+      - NET_ADMIN
+      - SYS_PTRACE
+    privileged: true
+    restart: unless-stopped
+    profiles:
+      - production
+
+  # Nginx Reverse Proxy (Optional - for HTTPS)
+  nginx:
+    image: nginx:alpine
+    container_name: network-dashboard-nginx
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    depends_on:
+      - dashboard-prod
+    restart: unless-stopped
+    profiles:
+      - production
+
+networks:
+  default:
+    name: dashboard-network

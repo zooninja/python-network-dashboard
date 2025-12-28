@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+.github/
+
+# Documentation
+*.md
+!README.md
+CHANGELOG.md
+SECURITY.md
+
+# Scripts (not needed in container)
+start.bat
+start.sh
+start_venv.sh
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+nginx.conf
+certs/
+
+# Logs
+*.log
