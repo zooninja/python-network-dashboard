@@ -14,6 +14,7 @@ echo "Installing dependencies..."
 pip install -q -r requirements.txt
 
 echo "Starting server..."
-python3 server.py
+echo "Note: Requires sudo for process information and termination"
+sudo python3 server.py
 
 deactivate

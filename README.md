@@ -53,7 +53,7 @@ python server.py
 - Click any connection to view details
 - Terminate processes with confirmation dialogs
 - Protected system processes cannot be terminated
-- May require administrator/sudo privileges
+- Linux: Requires sudo to view process info and terminate processes
 
 ## API Endpoints
 

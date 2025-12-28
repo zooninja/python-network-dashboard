@@ -31,10 +31,11 @@ echo "Starting Python Network Dashboard..."
 echo "Server will be available at: http://localhost:8081"
 echo ""
 echo "Press Ctrl+C to stop the server"
+echo "Note: Requires sudo for process information and termination"
 echo "============================================================"
 echo ""
 
-python3 server.py
+sudo python3 server.py
 
 echo ""
 echo "Server stopped."
