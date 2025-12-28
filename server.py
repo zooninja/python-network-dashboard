@@ -4,6 +4,12 @@ import psutil
 import socket
 from datetime import datetime
 from collections import Counter
+try:
+    from config import HOST, PORT, DEBUG
+except ImportError:
+    HOST = '0.0.0.0'
+    PORT = 8081
+    DEBUG = False
 
 app = Flask(__name__)
 CORS(app)
@@ -264,12 +270,17 @@ if __name__ == '__main__':
     print("=" * 60)
     print("Python Network Dashboard Server")
     print("=" * 60)
-    print(f"Starting server on http://0.0.0.0:8081")
+    mode = "Remote" if HOST == '0.0.0.0' else "Local"
+    print(f"Mode: {mode} ({HOST}:{PORT})")
+    if HOST == '0.0.0.0':
+        print(f"Access: http://<server-ip>:{PORT}")
+    else:
+        print(f"Access: http://localhost:{PORT}")
     print("Press Ctrl+C to stop the server")
     print("=" * 60)
 
     try:
-        app.run(host='0.0.0.0', port=8081, debug=False)
+        app.run(host=HOST, port=PORT, debug=DEBUG)
     except KeyboardInterrupt:
         print("\nServer stopped")
     except OSError as e:

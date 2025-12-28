@@ -8,13 +8,17 @@ Real-time web-based network monitoring dashboard with process management capabil
 
 ## Features
 
-- Real-time network connection monitoring (5-second auto-refresh)
-- Interactive filtering by connection state and process
+- Real-time network connection monitoring with 5-second auto-refresh
+- Interactive filtering by connection state and process name
 - Process termination with safety confirmations
+- System hostname and IP display for multi-machine monitoring
+- Local and remote access modes
 - Dark naval theme with smooth animations
-- Cross-platform (Windows, Linux, macOS)
+- Cross-platform support (Windows, Linux, macOS)
 
 ## Quick Start
+
+### Local Monitoring (localhost only)
 
 **Windows:**
 ```batch
@@ -28,40 +32,172 @@ start.bat
 
 **Linux (Debian 12+/Ubuntu 23.04+):**
 ```bash
-chmod +x start_venv.sh
-./start_venv.sh
+bash start_venv.sh
 ```
 
-Open browser to `http://localhost:8081`
+Access at `http://localhost:8081`
+
+### Remote Monitoring (network access)
+
+For remote access from other machines or cloud VMs, edit `config.py`:
+
+```python
+HOST = '0.0.0.0'  # Remote access (current default)
+PORT = 8081
+DEBUG = False
+```
+
+For local-only access, change to:
+
+```python
+HOST = 'localhost'  # Local access only
+PORT = 8081
+DEBUG = False
+```
+
+Then access via `http://<server-ip>:8081` (remote) or `http://localhost:8081` (local)
+
+**Security Note:** Remote mode exposes the dashboard on all network interfaces. Use firewall rules or VPN for production deployments.
 
 ## Installation
 
+### Standard Installation
 ```bash
+pip install -r requirements.txt
+python server.py
+```
+
+### Virtual Environment (Recommended for Linux)
+```bash
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 python server.py
 ```
 
 ## Usage
 
-### Filtering
-- Click stat cards to filter by connection state
-- Click processes to filter by application
-- Combine filters for precise results
-- Click X on tags or Clear All Filters to reset
+### Filtering Connections
+- Click stat cards (Total, Established, Listening, etc.) to filter by connection state
+- Click process names in "Top Processes" to filter by application
+- Combine state and process filters for precise results
+- Remove individual filters by clicking X on filter tags
+- Clear all filters with "Clear All Filters" button
 
 ### Process Management
-- Click any connection to view details
+- Click any connection row to view detailed process information
+- View CPU usage, memory, threads, start time, and executable path
 - Terminate processes with confirmation dialogs
-- Protected system processes cannot be terminated
-- Linux: Requires sudo to view process info and terminate processes
+- Protected system processes (csrss.exe, lsass.exe, systemd, etc.) cannot be terminated
+- **Linux/macOS:** Requires sudo for process information and termination
 
-## API Endpoints
+### System Information
+- Hostname and IP address displayed under dashboard title
+- Useful for monitoring multiple machines in one browser session
+
+## Configuration
+
+### Local vs Remote Access
+
+Edit `config.py` to switch between modes:
+
+**Remote Access (Default):**
+```python
+HOST = '0.0.0.0'
+PORT = 8081
+DEBUG = False
+```
+
+**Local Only:**
+```python
+HOST = 'localhost'
+PORT = 8081
+DEBUG = False
+```
+
+### Change Port
+
+Edit `config.py`:
+```python
+HOST = '0.0.0.0'
+PORT = 8888  # Your custom port
+DEBUG = False
+```
+
+### Connection Limit
+Maximum 50 connections displayed. Modify in `server.py` line 97:
+```python
+connections = connections[:50]
+```
+
+### Auto-refresh Interval
+Default 5 seconds. Change in `dashboard.html` line 682:
+```javascript
+refreshInterval = setInterval(refresh, 5000);
+```
+
+## Platform-Specific Notes
+
+### Windows
+- Run as Administrator for full process information
+- Uses batch script launcher (`start.bat`)
+
+### Linux
+- Requires sudo for process details and termination
+- Debian 12+/Ubuntu 23.04+ need virtual environment
+- Uses shell script launchers (`start.sh`, `start_venv.sh`)
+
+### macOS
+- May require sudo for process operations
+- Uses shell script launcher (`start.sh`)
+
+## API Reference
 
 ### GET /api/connections
-Returns active connections (max 50).
+Returns active network connections (max 50).
+
+**Response:**
+```json
+[
+  {
+    "LocalPort": 8081,
+    "RemoteAddress": "95.42.20.232",
+    "RemotePort": 55810,
+    "State": "ESTABLISHED",
+    "ProcessName": "python3",
+    "ProcessId": 1491
+  }
+]
+```
 
 ### GET /api/stats
 Returns connection statistics and top 10 processes.
+
+**Response:**
+```json
+{
+  "Stats": {
+    "Total": 44,
+    "Established": 12,
+    "Listening": 8,
+    "TimeWait": 2,
+    "CloseWait": 0
+  },
+  "TopProcesses": [...],
+  "Timestamp": "2025-12-28T16:54:23.123456"
+}
+```
+
+### GET /api/system
+Returns hostname and IP address.
+
+**Response:**
+```json
+{
+  "hostname": "UnuntuVM",
+  "ip": "10.0.0.4"
+}
+```
 
 ### GET /api/connection/\<local_port\>/\<remote_port\>
 Returns detailed connection and process information.
@@ -69,19 +205,33 @@ Returns detailed connection and process information.
 ### DELETE /api/connection/\<local_port\>/\<remote_port\>
 Terminates the process associated with a connection.
 
-## Configuration
-
-Port can be changed in `server.py` line 249:
-```python
-app.run(host='localhost', port=8081, debug=False)
-```
-
 ## Requirements
 
 - Python 3.7+
 - psutil 5.9.0+
 - Flask 2.3.0+
 - flask-cors 4.0.0+
+
+## Security Considerations
+
+- Protected system processes cannot be terminated
+- Confirmation dialogs prevent accidental termination
+- Remote access mode requires proper firewall configuration
+- No authentication implemented - use reverse proxy or VPN for production
+
+## Troubleshooting
+
+### Port Already in Use
+Change port in `server.py` or stop conflicting application.
+
+### No Process Information (Linux)
+Run with sudo: `sudo python3 server.py` or `sudo bash start_venv.sh`
+
+### Permission Denied (Linux Scripts)
+Make executable: `chmod +x start.sh start_venv.sh`
+
+### Debian/Ubuntu pip Error
+Use virtual environment launcher: `bash start_venv.sh`
 
 ## License
 
