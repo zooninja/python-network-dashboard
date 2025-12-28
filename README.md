@@ -6,6 +6,20 @@ Real-time web-based network monitoring dashboard with process management capabil
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
+## Screenshots
+
+### Dashboard Overview
+![Dashboard Overview](https://github.com/zooninja/python-network-dashboard/raw/main/screenshots/dashboard-overview.png)
+*Real-time network connection monitoring with 484 active connections across multiple processes*
+
+### Connection Filtering
+![Connection Filtering](https://github.com/zooninja/python-network-dashboard/raw/main/screenshots/connection-filtering.png)
+*Filter connections by state (ESTABLISHED, LISTENING, etc.) with live statistics*
+
+### Process Termination
+![Process Termination](https://github.com/zooninja/python-network-dashboard/raw/main/screenshots/process-termination.png)
+*Safely terminate processes with detailed confirmation dialogs and warnings*
+
 ## Features
 
 - Real-time network connection monitoring with 5-second auto-refresh
