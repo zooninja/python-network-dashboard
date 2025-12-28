@@ -1,14 +1,16 @@
 version: '3.8'
 
 services:
-  # Network Dashboard - Local Mode (No Auth)
+  # Network Dashboard - Local Mode (No Auth - localhost binding only)
   dashboard-local:
     build: .
     container_name: network-dashboard-local
-    network_mode: host
+    ports:
+      - "127.0.0.1:8081:8081"
     environment:
-      - HOST=127.0.0.1
+      - HOST=0.0.0.0
       - PORT=8081
+      - DASHBOARD_TOKEN=local-docker-no-auth
       - ALLOW_TERMINATE=true
     # Required for accessing host network connections
     cap_add:
@@ -27,7 +29,7 @@ services:
     environment:
       - HOST=0.0.0.0
       - PORT=8081
-      - DASHBOARD_TOKEN=${DASHBOARD_TOKEN:?DASHBOARD_TOKEN is required for exposed mode}
+      - DASHBOARD_TOKEN=${DASHBOARD_TOKEN}
       - EXPOSE=true
       - ALLOW_TERMINATE=${ALLOW_TERMINATE:-false}
     cap_add:
@@ -46,7 +48,7 @@ services:
     environment:
       - HOST=127.0.0.1
       - PORT=8081
-      - DASHBOARD_TOKEN=${DASHBOARD_TOKEN:?DASHBOARD_TOKEN is required}
+      - DASHBOARD_TOKEN=${DASHBOARD_TOKEN}
       - ALLOW_TERMINATE=false
     cap_add:
       - NET_ADMIN

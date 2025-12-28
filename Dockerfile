@@ -23,7 +23,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY --chown=dashboard:dashboard server.py .
 COPY --chown=dashboard:dashboard dashboard.html .
 COPY --chown=dashboard:dashboard dashboard_auth.js .
-COPY --chown=dashboard:dashboard config.py .
 
 # Switch to non-root user
 USER dashboard
