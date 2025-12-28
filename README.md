@@ -53,14 +53,14 @@ Access at `http://localhost:8081` - no authentication required for local use.
 
 ## Features
 
-- 🔄 Real-time network connection monitoring (auto-refresh every 5s)
-- 🔍 Filter by connection state (ESTABLISHED, LISTENING, etc.) and process
-- ⚡ Terminate processes with safety confirmations
-- 🔒 Safe-by-default: localhost-only mode needs no authentication
-- 🌐 Remote access mode with token authentication
-- 🛡️ Critical process protection (can't terminate system processes)
-- 🎨 Modern dark theme with smooth animations
-- 💻 Cross-platform (Windows, Linux, macOS)
+- Real-time network connection monitoring (auto-refresh every 5s)
+- Filter by connection state (ESTABLISHED, LISTENING, etc.) and process
+- Terminate processes with safety confirmations
+- Safe-by-default: localhost-only mode needs no authentication
+- Remote access mode with token authentication
+- Critical process protection (can't terminate system processes)
+- Modern dark theme with smooth animations
+- Cross-platform (Windows, Linux, macOS)
 
 ---
 
